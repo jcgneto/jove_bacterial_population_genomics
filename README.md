@@ -3,7 +3,7 @@
 ## Data folder
 
 The data folder does not contain any files because of their size. All data files can be found the Figshare repository for this paper:
-https://figshare.com/account/home#/projects/116625
+https://figshare.com/account/home#/projects/116625 or here https://figshare.com/account/projects/116625/articles/14829225
 
 ## Code folder 
 
