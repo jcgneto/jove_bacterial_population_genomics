@@ -1,0 +1,23 @@
+---
+title: "ProkEvo-associated hierarchical-based analysis of bacterial populations using R"
+author: "Joao Carlos Gomes-Neto"
+date: "6/23/2021"
+output: html_document
+---
+
+Enter and explaining packages needed
+
+Enter and quality control of the genotypic data
+
+Enter the phylogenetic data and generate the plot
+
+Frequency distribution of hierarchical genotypes
+
+ST-based diversity analysis using Simpson's D index
+
+ST-based diversity analysis using BAPS1-6 distributions
+
+ST-based analysis of AMR loci distribution 
+
+ST-based analysis of plasmid loci distribution 
+
