@@ -712,15 +712,19 @@ d2b <- d2
 
 cgmlst <- d2b %>%
               filter(serovar == "Newport") %>%
-              select(baps_1, cgmlst_ST) %>%
-              drop_na(baps_1, cgmlst_ST) %>%
-              group_by(baps_1, cgmlst_ST) %>%
+              select(st, cgmlst_ST) %>%
+              drop_na(st, cgmlst_ST) %>%
+              group_by(st, cgmlst_ST) %>%
               summarise(n = n()) %>%
               mutate(prop = n/sum(n)*100) 
 
 # check the first six observation of cgmlst
 
 head(cgmlst)
+
+# re-order ST 
+
+cgmlst$st <- factor(cgmlst$st, levels=c("ST5", "ST31", "ST45", "ST46", "ST118", "ST132", "ST350", "Other STs"))
 
 # plot 
 
@@ -736,7 +740,7 @@ figure_5 <- ggplot(cgmlst, aes(x = cgmlst_ST, y = prop, labels = cgmlst_ST)) + y
   geom_point(aes(size =  prop), color = "steelblue") +
   geom_text_repel(data=subset(cgmlst, prop > 15), aes(label = cgmlst_ST, size = 50), hjust = -25) +
   theme(strip.text.x = element_text(size = 30, colour = "black", angle = 0)) +
-  facet_wrap(~ baps_1)
+  facet_wrap(~ st)
 figure_5
 ```
 
