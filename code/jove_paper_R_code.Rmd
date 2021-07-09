@@ -1285,21 +1285,49 @@ abx1 <- abx %>% select(id, gene)
 ##########################################--------############################################
 #########################################--------#############################################
 
-# join ST and AMR loci data 
+# enter SISTR results
 
-d1 <- left_join(data1, abx1, on = "id")
+sistr <- read_csv('~/Documents/jove_bacterial_population_genomics/data/sistr_output.csv')
 
-# check for NAs or missing values
+# generate the id column 
 
-skim(d1)
+sistr$id <- sapply(strsplit(as.character(sistr$genome),'_'), "[", 1)
+
+# select id and cgmlst_ST columns 
+
+data3 <- sistr %>%
+            select(id, serovar) %>%
+            mutate_all(na_if, "-") %>%
+              mutate_all(na_if, "?") 
+
+# group serovars as Newport or others
+
+data3$serovar <- ifelse(data3$serovar == "Newport", "Newport",
+                            "Other serovars")
+
+##########################################--------############################################
+#########################################--------#############################################
+
+# merge datasets
+
+data4 <- left_join(data1, abx1, on = "id")
+data5 <- left_join(data4, data3, on = "id")
+
+# filter data for Newport only
+
+data6 <- data5 %>% filter(serovar == "Newport")
+
+# check for NAs
+
+skim(data6)
 
 # group ST missing values as "Other STs"
 
-d1 <- d1 %>% mutate(st = replace_na(st, "Other STs"))
+data6 <- data6 %>% mutate(st = replace_na(st, "Other STs"))
 
 # check for NAs again
 
-skim(d1)
+skim(data6)
 
 ##########################################--------############################################
 #########################################--------#############################################
@@ -1308,12 +1336,12 @@ skim(d1)
 
 # calculations for ST5
 
-d2a <- d1 %>% filter(st == "ST5")
+d2a <- data6 %>% filter(st == "ST5")
 
 d3a <- d2a %>% select(id, gene) %>%
     group_by(id, gene) %>%
     summarize(count = n()) %>%
-    #mutate(count = replace(count, count == 2, 1)) %>%
+    mutate(count = replace(count, count == 2, 1)) %>%
     filter(count <= 1) 
 
 d4a <- d3a %>% group_by(gene) %>% 
@@ -1328,7 +1356,7 @@ d5a <- d4a %>% mutate(st = "ST5")
 
 # calculations for ST31
 
-d2b <- d1 %>% filter(st == "ST31")
+d2b <- data6 %>% filter(st == "ST31")
 
 d3b <- d2b %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1348,7 +1376,7 @@ d5b <- d4b %>% mutate(st = "ST31")
 
 # calculations for ST45
 
-d2c <- d1 %>% filter(st == "ST45")
+d2c <- data6 %>% filter(st == "ST45")
 
 d3c <- d2c %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1368,7 +1396,7 @@ d5c <- d4c %>% mutate(st = "ST45")
 
 # calculations for ST46
 
-d2d <- d1 %>% filter(st == "ST46")
+d2d <- data6 %>% filter(st == "ST46")
 
 d3d <- d2d %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1388,7 +1416,7 @@ d5d <- d4d %>% mutate(st = "ST46")
 
 # calculations for ST118
 
-d2e <- d1 %>% filter(st == "ST118")
+d2e <- data6 %>% filter(st == "ST118")
 
 d3e <- d2e %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1408,7 +1436,7 @@ d5e <- d4e %>% mutate(st = "ST118")
 
 # calculations for ST132
 
-d2f <- d1 %>% filter(st == "ST132")
+d2f <- data6 %>% filter(st == "ST132")
 
 d3f <- d2f %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1428,7 +1456,7 @@ d5f <- d4f %>% mutate(st = "ST132")
 
 # calculations for ST350
 
-d2g <- d1 %>% filter(st == "ST350")
+d2g <- data6 %>% filter(st == "ST350")
 
 d3g <- d2g %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1448,7 +1476,7 @@ d5g <- d4g %>% mutate(st = "ST350")
 
 # calculations for Other ST lineages
 
-d2h <- d1 %>% filter(st == "Other STs")
+d2h <- data6 %>% filter(st == "Other STs")
 
 d3h <- d2h %>% select(id, gene) %>%
     group_by(id, gene) %>%
@@ -1594,7 +1622,7 @@ d2a <- d1 %>% filter(st == "ST5")
 d3a <- d2a %>% select(id, gene) %>%
     group_by(id, gene) %>%
     summarize(count = n()) %>%
-    #mutate(count = replace(count, count == 2, 1)) %>%
+    mutate(count = replace(count, count == 2, 1)) %>%
     filter(count <= 1) 
 
 d4a <- d3a %>% group_by(gene) %>% 
@@ -1789,7 +1817,7 @@ abx4 <- abx3 %>% select(d9)
 
 abx4[is.na(abx4)] <- 0
 
-# merge with orignal data containing the hierarchical genotypes
+# merge with original data containing the hierarchical genotypes
 
 d4 <- left_join(d3, abx4, on = "id")
 
@@ -1798,24 +1826,24 @@ d4 <- left_join(d3, abx4, on = "id")
 
 # change binary values from AMR data locus by locus
 
-d4 <- d4 %>% mutate(`aac(6')-Iaa_1` = factor(ifelse(`aac(6')-Iaa_1` == 1, "`aac(6')-Iaa_1` (present)", "`aac(6')-Iaa_1` (absent)")))
-d4 <- d4 %>% mutate(`mdf(A)_1` = factor(ifelse(`mdf(A)_1` == 1, "`mdf(A)_1` (present)", "`mdf(A)_1` (absent)")))
+d4 <- d4 %>% mutate(`aac(6')-Iaa_1` = factor(ifelse(`aac(6')-Iaa_1` == 1, "aac(6')-Iaa_1 (present)", "aac(6')-Iaa_1 (absent)")))
+d4 <- d4 %>% mutate(`mdf(A)_1` = factor(ifelse(`mdf(A)_1` == 1, "mdf(A)_1 (present)", "mdf(A)_1 (absent)")))
 d4 <- d4 %>% mutate(aadA2_1 = factor(ifelse(aadA2_1 == 1, "aadA2_1 (present)", "aadA2_1 (absent)")))
-d4 <- d4 %>% mutate(`ant(3'')-Ia_1` = factor(ifelse(`ant(3'')-Ia_1` == 1, "`ant(3'')-Ia_1` (present)", "`ant(3'')-Ia_1` (absent)")))
-d4 <- d4 %>% mutate(`aph(3')-Ia_1` = factor(ifelse(`aph(3')-Ia_1` == 1, "`aph(3')-Ia_1` (present)", "`aph(3')-Ia_1` (absent)")))
-d4 <- d4 %>% mutate(`blaCARB-2_1` = factor(ifelse(`blaCARB-2_1` == 1, "`blaCARB-2_1` (present)", "`blaCARB-2_1` (absent)")))
+d4 <- d4 %>% mutate(`ant(3'')-Ia_1` = factor(ifelse(`ant(3'')-Ia_1` == 1, "ant(3'')-Ia_1 (present)", "ant(3'')-Ia_1 (absent)")))
+d4 <- d4 %>% mutate(`aph(3')-Ia_1` = factor(ifelse(`aph(3')-Ia_1` == 1, "aph(3')-Ia_1 (present)", "aph(3')-Ia_1 (absent)")))
+d4 <- d4 %>% mutate(`blaCARB-2_1` = factor(ifelse(`blaCARB-2_1` == 1, "blaCARB-2_1 (present)", "blaCARB-2_1 (absent)")))
 d4 <- d4 %>% mutate(catA1_1 = factor(ifelse(catA1_1 == 1, "catA1_1 (present)", "catA1_1 (absent)")))
 d4 <- d4 %>% mutate(sul1_5 = factor(ifelse(sul1_5 == 1, "sul1_5 (present)", "sul1_5 (absent)")))
-d4 <- d4 %>% mutate(`tet(A)_6` = factor(ifelse(`tet(A)_6` == 1, "`tet(A)_6` (present)", "`tet(A)_6` (absent)")))
-d4 <- d4 %>% mutate(`tet(B)_2` = factor(ifelse(`tet(B)_2` == 1, "`tet(B)_2` (present)", "`tet(B)_2` (absent)")))
-d4 <- d4 %>% mutate(`aph(3'')-Ib_5` = factor(ifelse(`aph(3'')-Ib_5` == 1, "`aph(3'')-Ib_5` (present)", "`aph(3'')-Ib_5` (absent)")))
-d4 <- d4 %>% mutate(`aph(3')-Ia_9` = factor(ifelse(`aph(3')-Ia_9` == 1, "`aph(3')-Ia_9` (present)", "`aph(3')-Ia_9` (absent)")))
-d4 <- d4 %>% mutate(`aph(6)-Id_1` = factor(ifelse(`aph(6)-Id_1` == 1, "`aph(6)-Id_1` (present)", "`aph(6)-Id_1` (absent)")))
-d4 <- d4 %>% mutate(`blaCMY-2_1` = factor(ifelse(`blaCMY-2_1` == 1, "`blaCMY-2_1` (present)", "`blaCMY-2_1` (absent)")))
+d4 <- d4 %>% mutate(`tet(A)_6` = factor(ifelse(`tet(A)_6` == 1, "tet(A)_6 (present)", "tet(A)_6 (absent)")))
+d4 <- d4 %>% mutate(`tet(B)_2` = factor(ifelse(`tet(B)_2` == 1, "tet(B)_2 (present)", "tet(B)_2 (absent)")))
+d4 <- d4 %>% mutate(`aph(3'')-Ib_5` = factor(ifelse(`aph(3'')-Ib_5` == 1, "aph(3'')-Ib_5 (present)", "aph(3'')-Ib_5 (absent)")))
+d4 <- d4 %>% mutate(`aph(3')-Ia_9` = factor(ifelse(`aph(3')-Ia_9` == 1, "aph(3')-Ia_9 (present)", "aph(3')-Ia_9 (absent)")))
+d4 <- d4 %>% mutate(`aph(6)-Id_1` = factor(ifelse(`aph(6)-Id_1` == 1, "aph(6)-Id_1 (present)", "aph(6)-Id_1 (absent)")))
+d4 <- d4 %>% mutate(`blaCMY-2_1` = factor(ifelse(`blaCMY-2_1` == 1, "blaCMY-2_1 (present)", "blaCMY-2_1 (absent)")))
 d4 <- d4 %>% mutate(floR_2 = factor(ifelse(floR_2 == 1, "floR_2  (present)", "floR_2 (absent)")))
 d4 <- d4 %>% mutate(sul2_2 = factor(ifelse(sul2_2 == 1, "sul2_2 (present)", "sul2_2 (absent)")))
 d4 <- d4 %>% mutate(dfrA1_8 = factor(ifelse(dfrA1_8 == 1, "dfrA1_8 (present)", "dfrA1_8 (absent)")))
-d4 <- d4 %>% mutate(`mph(A)_2` = factor(ifelse(`mph(A)_2` == 1, "`mph(A)_2` (present)", "`mph(A)_2` (absent)")))
+d4 <- d4 %>% mutate(`mph(A)_2` = factor(ifelse(`mph(A)_2` == 1, "mph(A)_2 (present)", "mph(A)_2 (absent)")))
 d4 <- d4 %>% mutate(qnrA1_1 = factor(ifelse(qnrA1_1 == 1, "qnrA1_1 (present)", "qnrA1_1 (absent)")))
 
 ##########################################--------############################################
@@ -1870,24 +1898,24 @@ figure_9 <- gheatmap(tree_plot, d6, offset=.0, width=50, colnames = FALSE) +
                                "BAPS1 sub-group 9",
                                "ST5", "ST31", "ST45", "ST46", "ST118", "ST132", "ST350", "Other STs",
                                "cgMLST 1468400426", "cgMLST 1271156802", "cgMLST 3336043520", "cgMLST 88443731", "Other cgMLSTs",
-                               "`aac(6')-Iaa_1` (present)", "`aac(6')-Iaa_1` (absent)",
-                               "`mdf(A)_1` (present)", "`mdf(A)_1` (absent)",
+                               "aac(6')-Iaa_1 (present)", "aac(6')-Iaa_1 (absent)",
+                               "mdf(A)_1 (present)", "mdf(A)_1 (absent)",
                                "aadA2_1 (present)", "aadA2_1 (absent)",
-                               "`ant(3'')-Ia_1` (present)", "`ant(3'')-Ia_1` (absent)",
-                               "`aph(3')-Ia_1` (present)", "`aph(3')-Ia_1` (absent)",
-                               "`blaCARB-2_1` (present)", "`blaCARB-2_1` (absent)",
+                               "ant(3'')-Ia_1 (present)", "ant(3'')-Ia_1 (absent)",
+                               "aph(3')-Ia_1 (present)", "aph(3')-Ia_1 (absent)",
+                               "blaCARB-2_1 (present)", "blaCARB-2_1 (absent)",
                                "catA1_1 (present)", "catA1_1 (absent)",
                                "sul1_5 (present)", "sul1_5 (absent)", 
-                               "`tet(A)_6` (present)", "`tet(A)_6` (absent)", 
-                               "`tet(B)_2` (present)", "`tet(B)_2` (absent)",
-                               "`aph(3'')-Ib_5` (present)", "`aph(3'')-Ib_5` (absent)",
-                               "`aph(3')-Ia_9` (present)", "`aph(3')-Ia_9` (absent)",
-                               "`aph(6)-Id_1` (present)", "`aph(6)-Id_1` (absent)",
-                               "`blaCMY-2_1` (present)", "`blaCMY-2_1` (absent)",
+                               "tet(A)_6 (present)", "tet(A)_6 (absent)", 
+                               "tet(B)_2 (present)", "tet(B)_2 (absent)",
+                               "aph(3'')-Ib_5 (present)", "aph(3'')-Ib_5 (absent)",
+                               "aph(3')-Ia_9 (present)", "aph(3')-Ia_9 (absent)",
+                               "aph(6)-Id_1 (present)", "aph(6)-Id_1 (absent)",
+                               "blaCMY-2_1 (present)", "blaCMY-2_1 (absent)",
                                "floR_2  (present)", "floR_2 (absent)",
                                "sul2_2 (present)", "sul2_2 (absent)",
                                "dfrA1_8 (present)", "dfrA1_8 (absent)",
-                               "`mph(A)_2` (present)", "`mph(A)_2` (absent)", 
+                               "mph(A)_2 (present)", "mph(A)_2 (absent)", 
                                "qnrA1_1 (present)", "qnrA1_1 (absent)"),
                     name="Serovar -> BAPS1 -> ST -> cgMLST -> AMR loci") +
   theme(legend.title=element_text(size=24, face = "bold"), 
@@ -1978,7 +2006,7 @@ d2a <- d1 %>% filter(st == "ST5")
 d3a <- d2a %>% select(id, gene) %>%
     group_by(id, gene) %>%
     summarize(count = n()) %>%
-    #mutate(count = replace(count, count == 2, 1)) %>%
+    mutate(count = replace(count, count == 2, 1)) %>%
     filter(count <= 1) 
 
 d4a <- d3a %>% group_by(gene) %>% 
@@ -2182,24 +2210,24 @@ d4 <- left_join(d3, abx4, on = "id")
 
 # change binary values from AMR data locus by locus
 
-d4 <- d4 %>% mutate(`aac(6')-Iaa_1` = factor(ifelse(`aac(6')-Iaa_1` == 1, "`aac(6')-Iaa_1` (present)", "`aac(6')-Iaa_1` (absent)")))
-d4 <- d4 %>% mutate(`mdf(A)_1` = factor(ifelse(`mdf(A)_1` == 1, "`mdf(A)_1` (present)", "`mdf(A)_1` (absent)")))
+d4 <- d4 %>% mutate(`aac(6')-Iaa_1` = factor(ifelse(`aac(6')-Iaa_1` == 1, "aac(6')-Iaa_1 (present)", "aac(6')-Iaa_1 (absent)")))
+d4 <- d4 %>% mutate(`mdf(A)_1` = factor(ifelse(`mdf(A)_1` == 1, "mdf(A)_1 (present)", "mdf(A)_1 (absent)")))
 d4 <- d4 %>% mutate(aadA2_1 = factor(ifelse(aadA2_1 == 1, "aadA2_1 (present)", "aadA2_1 (absent)")))
-d4 <- d4 %>% mutate(`ant(3'')-Ia_1` = factor(ifelse(`ant(3'')-Ia_1` == 1, "`ant(3'')-Ia_1` (present)", "`ant(3'')-Ia_1` (absent)")))
-d4 <- d4 %>% mutate(`aph(3')-Ia_1` = factor(ifelse(`aph(3')-Ia_1` == 1, "`aph(3')-Ia_1` (present)", "`aph(3')-Ia_1` (absent)")))
-d4 <- d4 %>% mutate(`blaCARB-2_1` = factor(ifelse(`blaCARB-2_1` == 1, "`blaCARB-2_1` (present)", "`blaCARB-2_1` (absent)")))
+d4 <- d4 %>% mutate(`ant(3'')-Ia_1` = factor(ifelse(`ant(3'')-Ia_1` == 1, "ant(3'')-Ia_1 (present)", "ant(3'')-Ia_1 (absent)")))
+d4 <- d4 %>% mutate(`aph(3')-Ia_1` = factor(ifelse(`aph(3')-Ia_1` == 1, "aph(3')-Ia_1 (present)", "aph(3')-Ia_1 (absent)")))
+d4 <- d4 %>% mutate(`blaCARB-2_1` = factor(ifelse(`blaCARB-2_1` == 1, "blaCARB-2_1 (present)", "blaCARB-2_1 (absent)")))
 d4 <- d4 %>% mutate(catA1_1 = factor(ifelse(catA1_1 == 1, "catA1_1 (present)", "catA1_1 (absent)")))
 d4 <- d4 %>% mutate(sul1_5 = factor(ifelse(sul1_5 == 1, "sul1_5 (present)", "sul1_5 (absent)")))
-d4 <- d4 %>% mutate(`tet(A)_6` = factor(ifelse(`tet(A)_6` == 1, "`tet(A)_6` (present)", "`tet(A)_6` (absent)")))
-d4 <- d4 %>% mutate(`tet(B)_2` = factor(ifelse(`tet(B)_2` == 1, "`tet(B)_2` (present)", "`tet(B)_2` (absent)")))
-d4 <- d4 %>% mutate(`aph(3'')-Ib_5` = factor(ifelse(`aph(3'')-Ib_5` == 1, "`aph(3'')-Ib_5` (present)", "`aph(3'')-Ib_5` (absent)")))
-d4 <- d4 %>% mutate(`aph(3')-Ia_9` = factor(ifelse(`aph(3')-Ia_9` == 1, "`aph(3')-Ia_9` (present)", "`aph(3')-Ia_9` (absent)")))
-d4 <- d4 %>% mutate(`aph(6)-Id_1` = factor(ifelse(`aph(6)-Id_1` == 1, "`aph(6)-Id_1` (present)", "`aph(6)-Id_1` (absent)")))
-d4 <- d4 %>% mutate(`blaCMY-2_1` = factor(ifelse(`blaCMY-2_1` == 1, "`blaCMY-2_1` (present)", "`blaCMY-2_1` (absent)")))
+d4 <- d4 %>% mutate(`tet(A)_6` = factor(ifelse(`tet(A)_6` == 1, "tet(A)_6 (present)", "tet(A)_6 (absent)")))
+d4 <- d4 %>% mutate(`tet(B)_2` = factor(ifelse(`tet(B)_2` == 1, "tet(B)_2 (present)", "tet(B)_2 (absent)")))
+d4 <- d4 %>% mutate(`aph(3'')-Ib_5` = factor(ifelse(`aph(3'')-Ib_5` == 1, "aph(3'')-Ib_5 (present)", "aph(3'')-Ib_5 (absent)")))
+d4 <- d4 %>% mutate(`aph(3')-Ia_9` = factor(ifelse(`aph(3')-Ia_9` == 1, "aph(3')-Ia_9 (present)", "aph(3')-Ia_9 (absent)")))
+d4 <- d4 %>% mutate(`aph(6)-Id_1` = factor(ifelse(`aph(6)-Id_1` == 1, "aph(6)-Id_1 (present)", "aph(6)-Id_1 (absent)")))
+d4 <- d4 %>% mutate(`blaCMY-2_1` = factor(ifelse(`blaCMY-2_1` == 1, "blaCMY-2_1 (present)", "blaCMY-2_1 (absent)")))
 d4 <- d4 %>% mutate(floR_2 = factor(ifelse(floR_2 == 1, "floR_2  (present)", "floR_2 (absent)")))
 d4 <- d4 %>% mutate(sul2_2 = factor(ifelse(sul2_2 == 1, "sul2_2 (present)", "sul2_2 (absent)")))
 d4 <- d4 %>% mutate(dfrA1_8 = factor(ifelse(dfrA1_8 == 1, "dfrA1_8 (present)", "dfrA1_8 (absent)")))
-d4 <- d4 %>% mutate(`mph(A)_2` = factor(ifelse(`mph(A)_2` == 1, "`mph(A)_2` (present)", "`mph(A)_2` (absent)")))
+d4 <- d4 %>% mutate(`mph(A)_2` = factor(ifelse(`mph(A)_2` == 1, "mph(A)_2 (present)", "mph(A)_2 (absent)")))
 d4 <- d4 %>% mutate(qnrA1_1 = factor(ifelse(qnrA1_1 == 1, "qnrA1_1 (present)", "qnrA1_1 (absent)")))
 
 ##########################################--------############################################
@@ -2254,24 +2282,24 @@ figure_9b <- gheatmap(tree_plot, d6, offset=.0, width=50, colnames = FALSE) +
                                "BAPS1 sub-group 9",
                                "ST5", "ST31", "ST45", "ST46", "ST118", "ST132", "ST350", "Other STs",
                                "cgMLST 1468400426", "cgMLST 1271156802", "cgMLST 3336043520", "cgMLST 88443731", "Other cgMLSTs",
-                               "`aac(6')-Iaa_1` (present)", "`aac(6')-Iaa_1` (absent)",
-                               "`mdf(A)_1` (present)", "`mdf(A)_1` (absent)",
+                              "aac(6')-Iaa_1 (present)", "aac(6')-Iaa_1 (absent)",
+                               "mdf(A)_1 (present)", "mdf(A)_1 (absent)",
                                "aadA2_1 (present)", "aadA2_1 (absent)",
-                               "`ant(3'')-Ia_1` (present)", "`ant(3'')-Ia_1` (absent)",
-                               "`aph(3')-Ia_1` (present)", "`aph(3')-Ia_1` (absent)",
-                               "`blaCARB-2_1` (present)", "`blaCARB-2_1` (absent)",
+                               "ant(3'')-Ia_1 (present)", "ant(3'')-Ia_1 (absent)",
+                               "aph(3')-Ia_1 (present)", "aph(3')-Ia_1 (absent)",
+                               "blaCARB-2_1 (present)", "blaCARB-2_1 (absent)",
                                "catA1_1 (present)", "catA1_1 (absent)",
                                "sul1_5 (present)", "sul1_5 (absent)", 
-                               "`tet(A)_6` (present)", "`tet(A)_6` (absent)", 
-                               "`tet(B)_2` (present)", "`tet(B)_2` (absent)",
-                               "`aph(3'')-Ib_5` (present)", "`aph(3'')-Ib_5` (absent)",
-                               "`aph(3')-Ia_9` (present)", "`aph(3')-Ia_9` (absent)",
-                               "`aph(6)-Id_1` (present)", "`aph(6)-Id_1` (absent)",
-                               "`blaCMY-2_1` (present)", "`blaCMY-2_1` (absent)",
+                               "tet(A)_6 (present)", "tet(A)_6 (absent)", 
+                               "tet(B)_2 (present)", "tet(B)_2 (absent)",
+                               "aph(3'')-Ib_5 (present)", "aph(3'')-Ib_5 (absent)",
+                               "aph(3')-Ia_9 (present)", "aph(3')-Ia_9 (absent)",
+                               "aph(6)-Id_1 (present)", "aph(6)-Id_1 (absent)",
+                               "blaCMY-2_1 (present)", "blaCMY-2_1 (absent)",
                                "floR_2  (present)", "floR_2 (absent)",
                                "sul2_2 (present)", "sul2_2 (absent)",
                                "dfrA1_8 (present)", "dfrA1_8 (absent)",
-                               "`mph(A)_2` (present)", "`mph(A)_2` (absent)", 
+                               "mph(A)_2 (present)", "mph(A)_2 (absent)", 
                                "qnrA1_1 (present)", "qnrA1_1 (absent)"),
                     name="Serovar -> BAPS1 -> ST -> cgMLST -> AMR loci") +
   theme(legend.title=element_text(size=24, face = "bold"), 
