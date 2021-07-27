@@ -1,7 +1,9 @@
 ---
 title: "Hierarchical-based bacterial population genomics analysis using R"
 author: "Gomes-Neto JC, Pavlovikj N, Benson AK"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 This case study will be done using a Salmonella Newport dataset that is available on NCBI-SRA, and contains
@@ -21,45 +23,45 @@ every time you use them.
 
 # install tidyverse 
 
-install.packages("tidyverse")
+#install.packages("tidyverse")
 
 # install skimr 
 
-install.packages("skimr")
+#install.packages("skimr")
 
 # install vegan 
 
-install.packages("vegan")
+#install.packages("vegan")
 
 # install forcats
 
-install.packages("forcats")
+#install.packages("forcats")
 
 # install naniar
 
-install.packages("naniar")
+#install.packages("naniar")
 
 # install ggpubr
 
-install.packages("ggpubr")
+#install.packages("ggpubr")
 
 # install ggrepel
 
-install.packages("ggrepel")
+#install.packages("ggrepel")
 
 # install reshape2
 
-install.packages("reshape2")
+#install.packages("reshape2")
 
 # install reshape2
 
-install.packages("RColorBrewer")
+#install.packages("RColorBrewer")
 
 # install ggtree 
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("ggtree")
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("ggtree")
 
 # installation of ggtree will prompt a question about installation - answer is "a" to install/update all dependencies 
 ```
