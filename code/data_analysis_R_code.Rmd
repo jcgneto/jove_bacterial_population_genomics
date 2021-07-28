@@ -1100,7 +1100,7 @@ d6 <- rbind(d5a, d5b, d5c, d5d, d5e, d5f, d5g, d5h)
 #########################################--------#############################################
 # export data table containing ST and AMR loci information
 abx_newport_st <- d6
-write.csv(abx_newport_st,"~/Documents/jove_paper/data/abx_newport_st.csv", row.names = FALSE)
+write.csv(abx_newport_st,"abx_newport_st.csv", row.names = FALSE)
 #######################################################
 # filter AMR loci with proportion higher than or equal to %
 d7 <- d6 %>% filter(prop >= 10)
