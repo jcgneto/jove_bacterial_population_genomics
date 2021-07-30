@@ -967,7 +967,7 @@ skim(data6)
 # calculate the proportion of AMR loci for each ST lineage
 # calculations for ST5
 d2a <- data6 %>% filter(st == "ST5")
-# for ST5, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST5, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3a <- d2a %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -984,7 +984,7 @@ d5a <- d4a %>% mutate(st = "ST5")
 #########################################--------#############################################
 # calculations for ST31
 d2b <- data6 %>% filter(st == "ST31")
-# for ST31, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST31, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3b <- d2b %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -1000,7 +1000,7 @@ d5b <- d4b %>% mutate(st = "ST31")
 #########################################--------#############################################
 # calculations for ST45
 d2c <- data6 %>% filter(st == "ST45")
-# for ST45, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST45, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3c <- d2c %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -1016,7 +1016,7 @@ d5c <- d4c %>% mutate(st = "ST45")
 #########################################--------#############################################
 # calculations for ST46
 d2d <- data6 %>% filter(st == "ST46")
-# for ST46, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST46, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3d <- d2d %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -1032,7 +1032,7 @@ d5d <- d4d %>% mutate(st = "ST46")
 #########################################--------#############################################
 # calculations for ST118
 d2e <- data6 %>% filter(st == "ST118")
-# for ST118, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST118, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3e <- d2e %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -1048,7 +1048,7 @@ d5e <- d4e %>% mutate(st = "ST118")
 #########################################--------#############################################
 # calculations for ST132
 d2f <- data6 %>% filter(st == "ST132")
-# for ST132, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST132, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3f <- d2f %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -1064,7 +1064,7 @@ d5f <- d4f %>% mutate(st = "ST132")
 #########################################--------#############################################
 # calculations for ST350
 d2g <- data6 %>% filter(st == "ST350")
-# for ST350, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST350, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3g <- d2g %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by id and gene
@@ -1172,7 +1172,7 @@ skim(d1)
 # calculate the proportion of AMR loci for each ST lineage
 # calculations for ST5
 d2a <- d1 %>% filter(st == "ST5")
-# for ST5, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST5, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3a <- d2a %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1189,7 +1189,7 @@ d5a <- d4a %>% mutate(st = "ST5")
 #########################################--------#############################################
 # calculations for ST31
 d2b <- d1 %>% filter(st == "ST31")
-# for ST31, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST31, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3b <- d2b %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1206,7 +1206,7 @@ d5b <- d4b %>% mutate(st = "ST31")
 #########################################--------#############################################
 # calculations for ST45
 d2c <- d1 %>% filter(st == "ST45")
-# for ST45, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST45, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3c <- d2c %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1223,7 +1223,7 @@ d5c <- d4c %>% mutate(st = "ST45")
 #########################################--------#############################################
 # calculations for ST46
 d2d <- d1 %>% filter(st == "ST46")
-# for ST46, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST46, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3d <- d2d %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1240,7 +1240,7 @@ d5d <- d4d %>% mutate(st = "ST46")
 #########################################--------#############################################
 # calculations for ST118
 d2e <- d1 %>% filter(st == "ST118")
-# for ST118, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST118, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3e <- d2e %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1257,7 +1257,7 @@ d5e <- d4e %>% mutate(st = "ST118")
 #########################################--------#############################################
 # calculations for ST132
 d2f <- d1 %>% filter(st == "ST132")
-# for ST132, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST132, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3f <- d2f %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1274,7 +1274,7 @@ d5f <- d4f %>% mutate(st = "ST132")
 #########################################--------#############################################
 # calculations for ST350
 d2g <- d1 %>% filter(st == "ST350")
-# for ST350, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST350, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3g <- d2g %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1291,7 +1291,7 @@ d5g <- d4g %>% mutate(st = "ST350")
 #########################################--------#############################################
 # calculations for Other ST lineages
 d2h <- d1 %>% filter(st == "Other STs")
-# for other STs, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for other STs, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3h <- d2h %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1468,7 +1468,7 @@ skim(d1)
 # calculate the proportion of AMR loci for each ST lineage
 # calculations for ST5
 d2a <- d1 %>% filter(st == "ST5")
-# for ST5, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST5, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3a <- d2a %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1485,7 +1485,7 @@ d5a <- d4a %>% mutate(st = "ST5")
 #########################################--------#############################################
 # calculations for ST31
 d2b <- d1 %>% filter(st == "ST31")
-# for ST31, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST31, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3b <- d2b %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1502,7 +1502,7 @@ d5b <- d4b %>% mutate(st = "ST31")
 #########################################--------#############################################
 # calculations for ST45
 d2c <- d1 %>% filter(st == "ST45")
-# for ST45, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST45, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3c <- d2c %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1519,7 +1519,7 @@ d5c <- d4c %>% mutate(st = "ST45")
 #########################################--------#############################################
 # calculations for ST46
 d2d <- d1 %>% filter(st == "ST46")
-# for ST46, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST46, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3d <- d2d %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1536,7 +1536,7 @@ d5d <- d4d %>% mutate(st = "ST46")
 #########################################--------#############################################
 # calculations for ST118
 d2e <- d1 %>% filter(st == "ST118")
-# for ST118, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST118, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3e <- d2e %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1553,7 +1553,7 @@ d5e <- d4e %>% mutate(st = "ST118")
 #########################################--------#############################################
 # calculations for ST132
 d2f <- d1 %>% filter(st == "ST132")
-# for ST132, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST132, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3f <- d2f %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1570,7 +1570,7 @@ d5f <- d4f %>% mutate(st = "ST132")
 #########################################--------#############################################
 # calculations for ST350
 d2g <- d1 %>% filter(st == "ST350")
-# for ST350, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for ST350, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3g <- d2g %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
@@ -1587,7 +1587,7 @@ d5g <- d4g %>% mutate(st = "ST350")
 #########################################--------#############################################
 # calculations for Other ST lineages
 d2h <- d1 %>% filter(st == "Other STs")
-# for other STs, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for other STs, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3h <- d2h %>% 
     select(id, gene) %>% # select columns 
     group_by(id, gene) %>% # group by columns 
