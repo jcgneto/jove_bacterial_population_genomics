@@ -1080,7 +1080,7 @@ d5g <- d4g %>% mutate(st = "ST350")
 #########################################--------#############################################
 # calculations for Other ST lineages
 d2h <- data6 %>% filter(st == "Other STs")
-# for other STs, calculate the proportion of AMR loci and only keep proportion greater than 1%
+# for other STs, calculate the proportion of AMR loci and only keep proportion greater than 10%
 d3h <- d2h %>% 
     select(id, gene) %>%  # select columns 
     group_by(id, gene) %>% # group by id and gene
