@@ -12,12 +12,13 @@ The code folder contains the R markdown generated for this paper. In there, ther
 * How to install all packages 
 * How to activate the packages
 * Enter and quality control the genotypic data
-* Visualize the phylogeny-based hierarchical distribution of genotypes 
-* Visualize the frequency-based distribution of hierarhical genotypes
-* Visualize the ST-associated genotypic diversity calculated using Simpson's D index 
-* Visualize the ST-associated genotypic diversity calculated using a nested BAPS approach
-* Visualize the ST-associated distribution of AMR loci
-* Visualize the ST-associated distribution of plasmids
-* Visualize the phylogeny-based hierarchical distribution of genotypes along with uniquely distributed AMR loci and plasmids
+* Visualize the phylogeny-based hierarchical distribution of genotypes (Figure 1)
+* Visualize the frequency-based distribution of hierarhical genotypes (Figure 2 and Supplementary Figure S1)
+* Assess the distribution of STs across BAPS1 sub-groups (Figure 3)
+* Assess the distrubiton of AMR loci across STs (Figure 4)
+* Integrative visualizaiton of phylogenetic tree, hierarchical genotypes, and distribution of AMR loci (Figure 5)
+* Assessment of cgMLST distribution across ST lineages (Supplementary Figure S2)
+* Assessment of the genetic diversity across STs using the Simpson's D index of diversity across genotypic layers (Supplementary Figure S3)
+* Assessment of the genetic diversity across STs using the distribution of BAPS1-6 sub-groups or haplotypes (Supplementary Figure S4)
 
 
