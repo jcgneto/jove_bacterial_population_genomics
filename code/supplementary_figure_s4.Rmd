@@ -30,7 +30,7 @@ When beginning running this script, you can remove the # that comes before the i
 # install.packages("ggrepel")
 # install reshape2
 # install.packages("reshape2")
-# install reshape2
+# install RColorBrewer
 # install.packages("RColorBrewer")
 # install ggtree 
 # if (!requireNamespace("BiocManager", quietly = TRUE))
